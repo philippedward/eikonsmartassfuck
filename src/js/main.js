@@ -1,52 +1,39 @@
-document.getElementById("myImg").src = "grenade.png";
+"use strict";
 
-function lancerConfettisDerriereImage() {
-  const intervalle = 2000;
+console.log(window.innerHeight);
 
-  setInterval(() => {
-    confetti({
-      spread: 360,
-      ticks: 200,
-      gravity: 1,
-      decay: 0.94,
-      startVelocity: 30,
-      particleCount: 100,
-      scalar: 3,
-      shapes: ["image"],
-      shapeOptions: {
-        image: [
-          {
-            src: "grenade.png",
-            width: 32,
-            height: 32,
-          },
-        ],
-      },
-      // Positionner les confettis derrière l'image sang2.png
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      // Tu peux aussi ajuster la taille de l'image ou d'autres effets
-    });
-  }, intervalle); // Appelle la fonction toutes les 2 secondes
-}
-
-window.onload = function () {
-  lancerConfettisDerriereImage();
-};
-
-let scrollDirection = 1; // 1 for down, -1 for up
+let scrollDirection = 1; // 1 pour descendre, -1 pour monter
+let scrolledAmount = 0;
+let maxScroll = 594; // Nombre de pixels à défiler avant les pauses
+let pauseCount = 0;
+let maxPauses = 3;
 
 function autoScroll() {
-  window.scrollBy(0, scrollDirection * 1);
+  if (pauseCount >= maxPauses) {
+    pauseCount = 0; // Réinitialiser après les pauses
+    scrolledAmount = 0; // Réinitialiser le comptage du scroll
+    window.scrollTo(0, 0); // Remonter d'un coup en haut
+    setTimeout(autoScroll, 1000); // Pause avant de recommencer à descendre
+    return;
+  }
 
-  if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+  window.scrollBy(0, scrollDirection * 1);
+  scrolledAmount += 1;
+
+  if (scrolledAmount >= maxScroll) {
+    pauseCount++;
+    scrolledAmount = 0;
+    setTimeout(autoScroll, 2000); // Pause de 2 secondes
+  } else if (
+    window.innerHeight + window.pageYOffset >=
+    document.body.offsetHeight
+  ) {
+    // Atteindre le bas de la page, remonter d'un coup
     scrollDirection = -1;
-    setTimeout(autoScroll, 2000); // Pause for 2 seconds at the bottom
-  } else if (window.pageYOffset === 0) {
-    scrollDirection = 1;
-    setTimeout(autoScroll, 2000); // Pause for 2 seconds at the top
+    window.scrollTo(0, 0); // Remonter immédiatement en haut
+    setTimeout(autoScroll, 2000); // Pause de 2 secondes en haut avant de recommencer
   } else {
-    setTimeout(autoScroll, 10); // Continue scrolling
+    setTimeout(autoScroll, 10); // Continuer à défiler
   }
 }
 
