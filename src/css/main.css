@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+body {
+  position: relative;
+  z-index: 1;
+  background-image: url("/src/img/Group 2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 2058px;
+}
+
+h1 {
+  color: #ffffff;
+  font-family: "Caveat Brush";
+  font-size: 152px;
+  font-weight: 400;
+  transform: rotate(10deg);
+}
+
+h2 {
+  color: #ffffff;
+  text-align: right;
+  font-family: "Caveat Brush";
+  font-size: 76px;
+  font-weight: 400;
+  transform: rotate(-10deg);
+}
+
+.rotat {
+  transform: rotate(10deg);
+}
+
+p {
+  color: #ffffff;
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.gras p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+}
+
+.text-all {
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.text-orange {
+  align-items: flex-start;
+}
+
+.all {
+  display: flex;
+  gap: 20px;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.rouge {
+  margin-top: 190px;
+}
+
+.orange {
+  margin-top: 110px;
+}
+
+.vert {
+  margin-top: 60px;
+}
+
+.bleu {
+  margin-top: 127px;
+}
+
+.sirop-img {
+}
