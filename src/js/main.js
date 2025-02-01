@@ -2,43 +2,50 @@
 
 console.log(window.innerHeight);
 
-let scrollDirection = 1; // 1 pour descendre, -1 pour monter
-let scrolledAmount = 0;
-let maxScroll = 594; // Nombre de pixels à défiler avant les pauses (tu peux ajuster ça si nécessaire)
-let pauseCount = 0;
-let maxPauses = 4;
-let pageHeight = document.body.scrollHeight; // Hauteur totale de la page
-let pauseAfterPixels = 657; // Taille du défilement (en pixels) après laquelle la pause doit être effectuée
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".all");
+  let currentIndex = 0;
+  let scrollingDown = true;
 
-function autoScroll() {
-  // Calculer la hauteur de la page à chaque étape
-  pageHeight = document.body.scrollHeight;
+  const scrollToSection = (index) => {
+    sections[index].scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
-  // Pause après avoir atteint le nombre de pauses maximum
-  if (pauseCount >= maxPauses) {
-    pauseCount = 0; // Réinitialiser après les pauses
-    scrolledAmount = 0; // Réinitialiser le comptage du scroll
-    window.scrollTo(0, 0); // Remonter d'un coup en haut
-    setTimeout(autoScroll, 2000); // Pause avant de recommencer à descendre
-    return;
-  }
+  const pause = (duration) => {
+    return new Promise((resolve) => setTimeout(resolve, duration));
+  };
 
-  window.scrollBy(0, scrollDirection * 1);
-  scrolledAmount += 1;
+  const autoScroll = async () => {
+    while (true) {
+      scrollToSection(currentIndex);
+      await pause(4000); // Pause de 4 secondes pour chaque section
 
-  // Ajouter la pause après avoir défilé un certain nombre de pixels
-  if (scrolledAmount >= pauseAfterPixels) {
-    pauseCount++; // Compter la pause
-    scrolledAmount = 0; // Réinitialiser le comptage des pixels défilés
-    setTimeout(autoScroll, 2000); // Pause de 2 secondes
-  } else if (window.innerHeight + window.pageYOffset >= pageHeight) {
-    // Atteindre le bas de la page, remonter d'un coup
-    scrollDirection = -1;
-    window.scrollTo(0, 0); // Remonter immédiatement en haut
-    setTimeout(autoScroll, 2000); // Pause de 2 secondes en haut avant de recommencer
-  } else {
-    setTimeout(autoScroll, 10); // Continuer à défiler
-  }
+      if (scrollingDown) {
+        currentIndex++;
+        if (currentIndex >= sections.length) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+          await pause(2000); // Pause de 2 secondes en bas de la page
+          scrollingDown = false;
+          currentIndex = sections.length - 1;
+        }
+      } else {
+        currentIndex--;
+        if (currentIndex < 0) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          await pause(2000); // Pause de 2 secondes en haut de la page
+          scrollingDown = true;
+          currentIndex = 0;
+        }
+      }
+    }
+  };
+
+  autoScroll();
+});
+
+if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  window.scrollTo({ top: 0, behavior: "auto" }); // Remonte instantanément
 }
-
-autoScroll();

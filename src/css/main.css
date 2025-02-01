@@ -21,6 +21,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   height: 2595px;
+  overflow: hidden;
 }
 
 h1 {
