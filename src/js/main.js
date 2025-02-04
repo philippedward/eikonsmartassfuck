@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollToSection(currentIndex);
       console.log("current index : ", currentIndex);
 
-      var emojis = { 0: "🦠", 1: "🌸", 2: "🍊", 3: "🍃", 4: "🔫" };
+      var emojis = { 0: "🌈", 1: "🌺", 2: "🍊", 3: "🌱", 4: "🍾" };
       var emoji = emojis[currentIndex];
 
       setTimeout(() => {

@@ -107,6 +107,9 @@ p {
 .vert {
   margin-top: 190px;
   margin-left: 100px;
+  img {
+    width: 130px;
+  }
 }
 
 .bleu {
