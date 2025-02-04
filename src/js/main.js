@@ -3,7 +3,7 @@
 console.log(window.innerHeight);
 
 document.addEventListener("DOMContentLoaded", () => {
-  const sections = document.querySelectorAll(".all");
+  const sections = document.querySelectorAll(".scroll-pause");
   let currentIndex = 0;
   let scrollingDown = true;
 
@@ -18,34 +18,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const autoScroll = async () => {
     while (true) {
       scrollToSection(currentIndex);
-      await pause(4000); // Pause de 4 secondes pour chaque section
+      console.log("current index : ", currentIndex);
+
+      var emojis = { 0: "🦠", 1: "🌸", 2: "🍊", 3: "🍃", 4: "🔫" };
+      var emoji = emojis[currentIndex];
+
+      setTimeout(() => {
+        popConfetti(emoji);
+      }, 1000);
+
+      await pause(7000);
 
       if (scrollingDown) {
         currentIndex++;
-        if (currentIndex >= sections.length) {
+        if (currentIndex == sections.length) {
           window.scrollTo({
             top: document.body.scrollHeight,
             behavior: "smooth",
           });
-          await pause(2000); // Pause de 2 secondes en bas de la page
           scrollingDown = false;
-          currentIndex = sections.length - 1;
+          currentIndex = 0;
         }
       } else {
-        currentIndex--;
-        if (currentIndex < 0) {
+        if (currentIndex == 0) {
           window.scrollTo({ top: 0, behavior: "smooth" });
-          await pause(2000); // Pause de 2 secondes en haut de la page
           scrollingDown = true;
           currentIndex = 0;
         }
       }
     }
   };
-
   autoScroll();
 });
 
-if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-  window.scrollTo({ top: 0, behavior: "auto" }); // Remonte instantanément
+const all = document.getElementById(".all");
+const canvas = document.getElementById(".confetti");
+
+const jsConfetti = new JSConfetti();
+
+function popConfetti(emoji) {
+  jsConfetti.addConfetti({
+    emojis: [emoji],
+    imgSize: 50,
+    confettiNumber: 30,
+  });
 }
